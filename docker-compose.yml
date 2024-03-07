@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  isitfall:
+    container_name: isitfall
+    restart: always
+    image: isitfall
+    ports: 
+      - 80:80
+    build:
+      context: FallFrontEnd/
+      dockerfile: Dockerfile
