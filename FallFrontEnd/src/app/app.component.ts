@@ -1,14 +1,20 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { IsItFallComponent } from './is-it-fall/is-it-fall.component';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, IsItFallComponent],
+  imports: [RouterOutlet, IsItFallComponent, NgClass],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'FallFrontEnd';
+  public title = 'FallFrontEnd';
+  public season = '';
+
+  public setSeasonStyle(season: string): void {
+    this.season = season;
+  }
 }

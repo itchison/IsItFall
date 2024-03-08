@@ -1,4 +1,36 @@
-  <div class="container">
-    <app-is-it-fall></app-is-it-fall>
-      <router-outlet></router-outlet>
+  <div class="container" [ngClass]="season">
+    <app-is-it-fall (setSeason)="setSeasonStyle($event)"></app-is-it-fall>
+    <router-outlet></router-outlet>
+    <div class="fall-container">
+      <div class="loader">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
   </div>

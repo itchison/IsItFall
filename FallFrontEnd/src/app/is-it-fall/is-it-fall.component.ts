@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FallMessage } from '../fall-message';
 
 @Component({
@@ -6,20 +6,28 @@ import { FallMessage } from '../fall-message';
   standalone: true,
   imports: [],
   templateUrl: './is-it-fall.component.html',
-  styleUrl: './is-it-fall.component.css'
+  styleUrl: './is-it-fall.component.scss'
 })
-export class IsItFallComponent {
-  fallMessage: FallMessage = {
-    id: 1,
-    message: this.getFallMessage()
-  };
+export class IsItFallComponent implements OnInit {
+  @Output() public setSeason = new EventEmitter<string>();
+  public isFall = false;
+
+  public fallMessage!: FallMessage;
 
   getFallMessage(): string {
-    if (this.isFall()) {
+    if (this.isFall) {
       return this.getFunnyFallMessage();
     } else {
       return this.getFunnyNonFallMessage();
     }
+  }
+  public ngOnInit() {
+    this.isFall = this.getSeason() === 'fall';
+    this.fallMessage = {
+      id: 1,
+      message: this.getFallMessage()
+    };
+    this.setSeason.emit(this.getSeason());
   }
 
   getFunnyNonFallMessage(): string {
@@ -98,16 +106,45 @@ export class IsItFallComponent {
     return messages[randomIndex];
   }
 
-  isFall() : boolean {
+  /**
+   * This method returns the current season based on the current date.
+   * The seasons are defined as follows:
+   * - Winter: December 21 - March 19
+   * - Spring: March 20 - June 20
+   * - Summer: June 21 - September 21
+   * - Fall: September 22 - December 20
+   *
+   * @returns {string} The current season ('winter', 'spring', 'summer', 'fall', or 'Unknown season')
+   */
+  private getSeason() : string {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1; // Adding 1 because getMonth() returns zero-based index
     const currentDay = currentDate.getDate();
 
-    // Fall season typically spans from September (8) to November (10)
-    if (currentMonth === 9 || (currentMonth === 8 && currentDay >= 22) || (currentMonth === 11 && currentDay <= 20)) {
-        return true;
-    } else {
-        return false;
+    // To set to fall state go to line 13 and set isFall = true;
+    // and uncomment the line below
+    // return 'fall';
+
+    // Winter typically spans from December (12) to February (2)
+    if ((currentMonth === 12 && currentDay >= 21) || currentMonth === 1 || currentMonth === 2 || (currentMonth === 3 && currentDay <= 19)) {
+      return 'winter';
     }
+    // Spring typically spans from March (3) to May (5)
+    else if ((currentMonth === 3 && currentDay >= 20) || currentMonth === 4 || currentMonth === 5 || (currentMonth === 6 && currentDay <= 20)) {
+      return 'spring';
+    }
+    // Summer typically spans from June (6) to August (8)
+    else if ((currentMonth === 6 && currentDay >= 21) || currentMonth === 7 || currentMonth === 8 || (currentMonth === 9 && currentDay <= 21)) {
+      return 'summer';
+    }
+    // Fall season typically spans from September (9) to November (11)
+    else if ((currentMonth === 9 || (currentMonth === 8 && currentDay >= 22) || (currentMonth === 11 && currentDay <= 20))) {
+      this.isFall = true;
+      return 'fall';
+    }
+    else {
+      return 'Unknown season';
+    }
+  }
 }
-}
+
